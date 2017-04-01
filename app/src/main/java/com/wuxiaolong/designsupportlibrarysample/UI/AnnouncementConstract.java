@@ -1,6 +1,6 @@
 package com.wuxiaolong.designsupportlibrarysample.UI;
 
-import org.jsoup.nodes.Element;
+import com.wuxiaolong.designsupportlibrarysample.datas.LongquanData;
 
 import java.util.List;
 
@@ -11,9 +11,12 @@ public class AnnouncementConstract {
     interface BasePrenter{
         void start();
         void getAnnoucement();
+        void getMoreAnnoucement(int page);
     };
     interface BaseView<T>{
         void setPresenter(T t);
-        void showList(List<Element> e);
+        void showList(List<LongquanData> e);
+
+        void loadMoreList(List<LongquanData> datas);
     }
 }

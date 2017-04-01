@@ -11,10 +11,34 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
     }
+    signingConfigs{
+        debug {
+            storeFile file("C:\\Users\\IVERSON\\Desktop\\SourceCode")
+            storePassword "cmy123"
+            keyAlias "cmy"
+            keyPassword "cmy123"
+        }
+
+        release{
+            storeFile file("C:\\Users\\IVERSON\\Desktop\\SourceCode")
+            storePassword "cmy123"
+            keyAlias "cmy"
+            keyPassword "cmy123"
+        }
+    }
+
+
     buildTypes {
+        debug{
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }

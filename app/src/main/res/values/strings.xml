@@ -110,14 +110,14 @@
 　　所以，请相信一点一滴付出的力量！</string>
     <string name="test_data">测试数据</string>
     <string name="detail_title">详情标题</string>
-    <string name="page1">每日推荐</string>
-    <string name="page2">职场指南</string>
-    <string name="page3">经典语录</string>
-    <string name="author">吴小龙同學</string>
+    <string name="page1">龙泉驿公告</string>
+    <string name="page2">郫都区公告</string>
+    <string name="page3">温江区公告</string>
+    <string name="author">""</string>
     <string name="bottomsheetdialog">BottomSheetDialog</string>
-    <string name="blog">个人博客：<u>http://wuxiaolong.me/</u></string>
-    <string name="weixin">微信公众号：<u>吴小龙同学</u></string>
-    <string name="github">github：<u>https://github.com/WuXiaolong/</u></string>
+    <string name="blog">""</string>
+    <string name="weixin">""</string>
+    <string name="github">""</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

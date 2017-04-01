@@ -111,12 +111,12 @@ public class MainActivity extends BaseActivity {
                     currentFragment = new ThirdFragment();
                     switchContent(currentFragment);
                     return true;
-                case R.id.navigation_item_3:
-                    currentIndex = 1;
-                    menuItem.setChecked(true);
-                    currentFragment = new SecondFragment();
-                    switchContent(currentFragment);
-                    return true;
+//                case R.id.navigation_item_3:
+//                    currentIndex = 1;
+//                    menuItem.setChecked(true);
+//                    currentFragment = new SecondFragment();
+//                    switchContent(currentFragment);
+//                    return true;
                 case R.id.navigation_item_night:
                     SharedPreferencesUtil.setBoolean(mActivity, AppConstants.ISNIGHT, true);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

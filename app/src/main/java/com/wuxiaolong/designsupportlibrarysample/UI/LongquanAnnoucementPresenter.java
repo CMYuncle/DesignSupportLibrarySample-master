@@ -5,6 +5,7 @@ import android.util.Log;
 import com.wuxiaolong.designsupportlibrarysample.API.ApiClient;
 import com.wuxiaolong.designsupportlibrarysample.API.ApiStories;
 import com.wuxiaolong.designsupportlibrarysample.API.RetrofitCallback;
+import com.wuxiaolong.designsupportlibrarysample.datas.LongquanData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,11 +22,11 @@ import retrofit2.Call;
 /**
  * Created by IVERSON on 2017/3/13.
  */
-public class AnnoucementPresenter implements AnnouncementConstract.BasePrenter {
+public class LongquanAnnoucementPresenter implements AnnouncementConstract.BasePrenter {
 
     AnnouncementConstract.BaseView mView;
 
-    public AnnoucementPresenter(AnnouncementConstract.BaseView mView) {
+    public LongquanAnnoucementPresenter(AnnouncementConstract.BaseView mView) {
         this.mView = mView;
         mView.setPresenter(this);
     }
@@ -44,14 +45,21 @@ public class AnnoucementPresenter implements AnnouncementConstract.BasePrenter {
             public void onSuccess(ResponseBody model) {
                 try {
                     Document document = Jsoup.parse(new String(model.bytes(), "UTF-8"), ApiStories.LONGQUANBASEURL);
-                    List<Element> mainList = new ArrayList<Element>();
                     List<Element> itemList = new ArrayList<Element>();
                     Elements all = document.getElementsByClass("innerList");
                     for (Element e : all) {
                         itemList.addAll(e.getElementsByTag("li"));
                         Log.e("e", e.toString());
                     }
-                    mView.showList(itemList);
+                    ArrayList<LongquanData> list = new ArrayList<LongquanData>();
+                    for (Element element : itemList) {
+                        LongquanData item = new LongquanData();
+                        item.setUrl(ApiStories.LONGQUANBASEURL + element.getElementsByTag("a").attr("href"));
+                        item.setTime(element.getElementsByClass("fr").text());
+                        item.setDes(element.getElementsByTag("a").text());
+                        list.add(item);
+                    }
+                    mView.showList(list);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -72,6 +80,11 @@ public class AnnoucementPresenter implements AnnouncementConstract.BasePrenter {
 
             }
         });
+
+    }
+
+    @Override
+    public void getMoreAnnoucement(int page) {
 
     }
 }

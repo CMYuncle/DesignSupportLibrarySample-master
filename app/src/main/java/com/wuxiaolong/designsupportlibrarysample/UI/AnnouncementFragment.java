@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 
 import com.wuxiaolong.designsupportlibrarysample.Adapter.LongQuanYiRecyclerViewAdapter;
 import com.wuxiaolong.designsupportlibrarysample.R;
+import com.wuxiaolong.designsupportlibrarysample.datas.LongquanData;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import org.jsoup.nodes.Element;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,19 +24,19 @@ import java.util.List;
  * 个人博客：http://wuxiaolong.me/
  * 公众号：吴小龙同学
  */
-public class AnnouncementFragment extends Fragment implements AnnouncementConstract.BaseView<AnnoucementPresenter> {
+public class AnnouncementFragment extends Fragment implements AnnouncementConstract.BaseView<AnnouncementConstract.BasePrenter> {
     // 标志位，标志已经初始化完成，因为setUserVisibleHint是在onCreateView之前调用的，在视图未初始化的时候，在lazyLoad当中就使用的话，就会有空指针的异常
     private boolean isPrepared;
     //标志当前页面是否可见
     private boolean isVisible;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
-    private List<String> mDataList = new ArrayList<>();
+    private List<LongquanData> mDataList = new ArrayList<>();
     private LongQuanYiRecyclerViewAdapter mRecyclerViewAdapter;
     private String mTitle;
     private Handler handler;
     private Runnable runnable;
-    private AnnoucementPresenter annoucementPresenter;
-
+    private AnnouncementConstract.BasePrenter mPresenter;
+    int page = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,12 +57,12 @@ public class AnnouncementFragment extends Fragment implements AnnouncementConstr
             @Override
             public void onRefresh() {
                 mDataList.clear();
-                annoucementPresenter.getAnnoucement();
+                mPresenter.getAnnoucement();
             }
 
             @Override
             public void onLoadMore() {
-
+                mPresenter.getMoreAnnoucement(page+1);
             }
         });
         isPrepared = true;
@@ -92,7 +92,7 @@ public class AnnouncementFragment extends Fragment implements AnnouncementConstr
         if (!isVisible || !isPrepared) {
             return;
         }
-        annoucementPresenter.getAnnoucement();
+        mPresenter.getAnnoucement();
     }
 
     protected void onInvisible() {
@@ -107,23 +107,40 @@ public class AnnouncementFragment extends Fragment implements AnnouncementConstr
 
 
     @Override
-    public void setPresenter(AnnoucementPresenter annoucementPresenter) {
-        this.annoucementPresenter = annoucementPresenter;
+    public void setPresenter(AnnouncementConstract.BasePrenter longquanAnnoucementPresenter) {
+        this.mPresenter = longquanAnnoucementPresenter;
     }
 
     @Override
-    public void showList(final List<Element> e) {
+    public void showList(final List<LongquanData> e) {
         runnable = new Runnable() {
             @Override
             public void run() {
-                for (Element element : e) {
-                    mDataList.add(element.getElementsByTag("a").attr("href") + "," + element.text());
-                }
-                mRecyclerViewAdapter.notifyDataSetChanged();
+                page = 1;
+                mDataList = e;
+                Collections.sort(mDataList);
+                mRecyclerViewAdapter.updateDatas(mDataList);
                 mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
             }
         };
         handler = new Handler();
         handler.postDelayed(runnable, 500);
     }
+
+    @Override
+    public void loadMoreList(final List<LongquanData> datas) {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                Collections.sort(datas);
+                mRecyclerViewAdapter.insertDatas(datas);
+                mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+                page++;
+            }
+        };
+        handler = new Handler();
+        handler.postDelayed(runnable, 500);
+    }
+
+
 }

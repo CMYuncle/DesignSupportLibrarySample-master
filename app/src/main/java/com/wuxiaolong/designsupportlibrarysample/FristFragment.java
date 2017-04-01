@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wuxiaolong.androidutils.library.LogUtil;
-import com.wuxiaolong.designsupportlibrarysample.UI.AnnoucementPresenter;
 import com.wuxiaolong.designsupportlibrarysample.UI.AnnouncementFragment;
+import com.wuxiaolong.designsupportlibrarysample.UI.LongquanAnnoucementPresenter;
+import com.wuxiaolong.designsupportlibrarysample.UI.PiXianAnnouncementPresenter;
+import com.wuxiaolong.designsupportlibrarysample.UI.WenjiangAnnoucementPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +77,7 @@ public class FristFragment extends BaseFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                showToast("query=" + query);
+                showToast("等待本帅哥的后期开发");
                 return false;
             }
 
@@ -95,7 +97,7 @@ public class FristFragment extends BaseFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_about:
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/WuXiaolong/DesignSupportLibrarySample"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.rainymood.com/"));
                         getActivity().startActivity(intent);
                         break;
                 }
@@ -153,14 +155,15 @@ public class FristFragment extends BaseFragment {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         Fragment newfragment = new AnnouncementFragment();
-        new AnnoucementPresenter((AnnouncementFragment) newfragment);
+        new LongquanAnnoucementPresenter((AnnouncementFragment) newfragment);
         Bundle data = new Bundle();
         data.putInt("id", 0);
         data.putString("title", getString(R.string.page1));
         newfragment.setArguments(data);
         adapter.addFrag(newfragment, getString(R.string.page1));
 
-        newfragment = new ContentFragment();
+        newfragment = new AnnouncementFragment();
+        new PiXianAnnouncementPresenter((AnnouncementFragment) newfragment);
         data = new Bundle();
         data.putInt("id", 1);
         data.putString("title", getString(R.string.page2));
@@ -168,13 +171,14 @@ public class FristFragment extends BaseFragment {
         adapter.addFrag(newfragment, getString(R.string.page2));
 
 
-        newfragment = new ContentFragment();
+        newfragment = new AnnouncementFragment();
+        new WenjiangAnnoucementPresenter((AnnouncementFragment) newfragment);
         data = new Bundle();
         data.putInt("id", 2);
         data.putString("title", getString(R.string.page3));
         newfragment.setArguments(data);
         adapter.addFrag(newfragment, getString(R.string.page3));
-        
+
         viewPager.setAdapter(adapter);
 
     }

@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wuxiaolong.designsupportlibrarysample.API.ApiStories;
 import com.wuxiaolong.designsupportlibrarysample.AppConstants;
 import com.wuxiaolong.designsupportlibrarysample.R;
 import com.wuxiaolong.designsupportlibrarysample.UI.WebViewActivity;
+import com.wuxiaolong.designsupportlibrarysample.datas.LongquanData;
 
 import java.util.List;
 
 public class LongQuanYiRecyclerViewAdapter extends RecyclerView.Adapter<LongQuanYiRecyclerViewAdapter.ViewHolder> {
-    private List<String> dataList;
+    private List<LongquanData> dataList;
     private Activity mActivity;
 
-    public LongQuanYiRecyclerViewAdapter(Activity activity, List<String> dataList) {
+    public LongQuanYiRecyclerViewAdapter(Activity activity, List<LongquanData> dataList) {
         this.dataList = dataList;
         this.mActivity = activity;
     }
@@ -33,11 +33,18 @@ public class LongQuanYiRecyclerViewAdapter extends RecyclerView.Adapter<LongQuan
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(dataList.get(position).split(",")[1]);
-        if (position % 2 == 0) {
-            holder.showImage.setBackgroundResource(R.mipmap.show_img1);
-        } else {
-            holder.showImage.setBackgroundResource(R.mipmap.show_img2);
+        holder.title.setText(dataList.get(position).getDes());
+        holder.time.setText(dataList.get(position).getTime());
+        if (position % 5 == 0) {
+            holder.showImage.setBackgroundResource(R.mipmap.cat1);
+        } else if (position % 5 == 1) {
+            holder.showImage.setBackgroundResource(R.mipmap.cat2);
+        } else if (position % 5 == 2) {
+            holder.showImage.setBackgroundResource(R.mipmap.cat3);
+        } else if (position % 5 == 3) {
+            holder.showImage.setBackgroundResource(R.mipmap.cat4);
+        } else if (position % 5 == 4) {
+            holder.showImage.setBackgroundResource(R.mipmap.cat5);
         }
     }
 
@@ -48,11 +55,13 @@ public class LongQuanYiRecyclerViewAdapter extends RecyclerView.Adapter<LongQuan
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
+        TextView time;
         ImageView showImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
+            time = (TextView) itemView.findViewById(R.id.time);
             showImage = (ImageView) itemView.findViewById(R.id.showImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,10 +69,21 @@ public class LongQuanYiRecyclerViewAdapter extends RecyclerView.Adapter<LongQuan
                     Intent intent = new Intent();
                     intent.setClass(mActivity, WebViewActivity.class);
                     intent.putExtra(AppConstants.WEBVIEWTITLE, "");
-                    intent.putExtra(AppConstants.WEBVIEWURL, ApiStories.LONGQUANBASEURL + dataList.get(getLayoutPosition()).split(",")[0]);
+                    intent.putExtra(AppConstants.WEBVIEWURL, dataList.get(getLayoutPosition()).getUrl());
                     mActivity.startActivity(intent);
                 }
             });
         }
+    }
+
+    public void updateDatas(List<LongquanData> list) {
+        this.dataList = list;
+        notifyDataSetChanged();
+    }
+
+    public void insertDatas(List<LongquanData> list) {
+        int start = dataList.size();
+        this.dataList.addAll(list);
+        notifyItemRangeInserted(start, list.size());
     }
 }

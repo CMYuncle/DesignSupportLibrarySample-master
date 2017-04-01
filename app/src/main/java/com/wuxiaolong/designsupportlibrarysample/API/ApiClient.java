@@ -13,7 +13,8 @@ import retrofit2.Retrofit;
 public class ApiClient {
     private static ApiClient mInstence;
     private ApiStories longquanyiApi;
-
+    private ApiStories pixianApi;
+    private ApiStories wenjiangApi;
 
     public synchronized static ApiClient getApiServer() {
         if (mInstence == null) {
@@ -40,5 +41,45 @@ public class ApiClient {
 
         }
         return longquanyiApi;
+    }
+
+    public ApiStories getPiXIanApi() {
+        if (pixianApi == null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builder.addInterceptor(loggingInterceptor);
+            }
+            OkHttpClient okHttpClient = builder.build();
+            Retrofit pixianRetrofit = new Retrofit.Builder()
+                    .baseUrl(ApiStories.PIXIANBASEURL)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(okHttpClient)
+                    .build();
+            pixianApi =  pixianRetrofit.create(ApiStories.class);
+
+        }
+        return pixianApi;
+    }
+
+    public ApiStories getWenJiangApi() {
+        if (wenjiangApi == null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builder.addInterceptor(loggingInterceptor);
+            }
+            OkHttpClient okHttpClient = builder.build();
+            Retrofit wenjiangRetrofit = new Retrofit.Builder()
+                    .baseUrl(ApiStories.WENJIANGBASEURL)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(okHttpClient)
+                    .build();
+            wenjiangApi =  wenjiangRetrofit.create(ApiStories.class);
+
+        }
+        return wenjiangApi;
     }
 }

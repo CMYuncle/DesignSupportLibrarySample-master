@@ -16,10 +16,10 @@
             android:id="@+id/navigation_item_2"
             android:icon="@drawable/abc_btn_radio_material"
             android:title="其他组件" />
-        <item
-            android:id="@+id/navigation_item_3"
-            android:icon="@drawable/abc_btn_radio_material"
-            android:title="关于作者" />
+        <!--<item-->
+            <!--android:id="@+id/navigation_item_3"-->
+            <!--android:icon="@drawable/abc_btn_radio_material"-->
+            <!--android:title="关于作者" />-->
 
     </group>
 
